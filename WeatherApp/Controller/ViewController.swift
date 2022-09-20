@@ -8,6 +8,8 @@
 import UIKit
 
 class ViewController: UIViewController {
+    @IBOutlet weak var scrollbarView: UIView!
+    
     @IBOutlet var weatherIconImageView: UIImageView!
     @IBOutlet var cityNameLabel: UILabel!
     @IBOutlet var tempLabel: UILabel!
@@ -57,7 +59,6 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         scrollbarTimeLabels = [scrollbarTimeLabel01, scrollbarTimeLabel02, scrollbarTimeLabel03, scrollbarTimeLabel04, scrollbarTimeLabel05, scrollbarTimeLabel06, scrollbarTimeLabel07, scrollbarTimeLabel08]
         
         scrollbarTempLabels = [scrollbarTempLabel01, scrollbarTempLabel02, scrollbarTempLabel03, scrollbarTempLabel04, scrollbarTempLabel05, scrollbarTempLabel06, scrollbarTempLabel07, scrollbarTempLabel08]
@@ -118,7 +119,7 @@ class ViewController: UIViewController {
               let data = try? Data(contentsOf: url) else {
             return Data()
         }
-        print(icon)
+
         return data
     }
     
@@ -131,7 +132,8 @@ class ViewController: UIViewController {
         formatterTime.dateFormat = "a HH"
         var result = formatterTime.string(from: time).components(separatedBy: " ")
         
-        result[1] = Int(result[1])! == 0 ?String(Int(result[1])! + 12) : String(Int(result[1])!)
+        result[0] = result[0] == "오전" || result[0] == "AM" ? "오전" : "오후"
+        result[1] = Int(result[1])! == 0 ? String(Int(result[1])! + 12) : String(Int(result[1])!)
         result[1] = Int(result[1])! > 12 ? String(Int(result[1])! - 12) : String(Int(result[1])!)
         
         let calculatedTime = "\(result[0]) \(result[1])"
