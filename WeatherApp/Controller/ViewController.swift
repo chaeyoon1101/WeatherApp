@@ -13,6 +13,40 @@ class ViewController: UIViewController {
     @IBOutlet var tempLabel: UILabel!
     @IBOutlet var feelsLikeTempLabel: UILabel!
     
+    @IBOutlet var scrollbarTimeLabel01: UILabel!
+    @IBOutlet var scrollbarTimeLabel02: UILabel!
+    @IBOutlet var scrollbarTimeLabel03: UILabel!
+    @IBOutlet var scrollbarTimeLabel04: UILabel!
+    @IBOutlet var scrollbarTimeLabel05: UILabel!
+    @IBOutlet var scrollbarTimeLabel06: UILabel!
+    @IBOutlet var scrollbarTimeLabel07: UILabel!
+    @IBOutlet var scrollbarTimeLabel08: UILabel!
+    
+    @IBOutlet var scrollbarTempLabel01: UILabel!
+    @IBOutlet var scrollbarTempLabel02: UILabel!
+    @IBOutlet var scrollbarTempLabel03: UILabel!
+    @IBOutlet var scrollbarTempLabel04: UILabel!
+    @IBOutlet var scrollbarTempLabel05: UILabel!
+    @IBOutlet var scrollbarTempLabel06: UILabel!
+    @IBOutlet var scrollbarTempLabel07: UILabel!
+    @IBOutlet var scrollbarTempLabel08: UILabel!
+    
+    @IBOutlet var scrollbarIconImageView01: UIImageView!
+    @IBOutlet var scrollbarIconImageView02: UIImageView!
+    @IBOutlet var scrollbarIconImageView03: UIImageView!
+    @IBOutlet var scrollbarIconImageView04: UIImageView!
+    @IBOutlet var scrollbarIconImageView05: UIImageView!
+    @IBOutlet var scrollbarIconImageView06: UIImageView!
+    @IBOutlet var scrollbarIconImageView07: UIImageView!
+    @IBOutlet var scrollbarIconImageView08: UIImageView!
+    
+    var scrollbarTimeLabels = [UILabel]()
+    
+    var scrollbarTempLabels = [UILabel]()
+
+    var scrollbarIconImageViews = [UIImageView]()
+
+    
     let weatherService = WeatherService()
     
     var main = [MainData]()
@@ -23,6 +57,12 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        scrollbarTimeLabels = [scrollbarTimeLabel01, scrollbarTimeLabel02, scrollbarTimeLabel03, scrollbarTimeLabel04, scrollbarTimeLabel05, scrollbarTimeLabel06, scrollbarTimeLabel07, scrollbarTimeLabel08]
+        
+        scrollbarTempLabels = [scrollbarTempLabel01, scrollbarTempLabel02, scrollbarTempLabel03, scrollbarTempLabel04, scrollbarTempLabel05, scrollbarTempLabel06, scrollbarTempLabel07, scrollbarTempLabel08]
+        
+        scrollbarIconImageViews = [scrollbarIconImageView01, scrollbarIconImageView02, scrollbarIconImageView03, scrollbarIconImageView04, scrollbarIconImageView05, scrollbarIconImageView06, scrollbarIconImageView07, scrollbarIconImageView08]
         
         weatherService.getWeather { result in
             switch result {
@@ -50,20 +90,65 @@ class ViewController: UIViewController {
     }
     
     private func render() {
-        guard let icon = weather.first?.icon,
-              let url = URL(string: "https://openweathermap.org/img/wn/\(icon)@2x.png"),
-              let data = try? Data(contentsOf: url) else { return }
-        
+        let icon = getWeatherIcon(weather.first?.icon)
         let temp = main.first?.temp!
         let feelsLikeTemp = main.first?.feelsLike
         let cityName = "\(cityName!), \(country!)"
         
-        weatherIconImageView.image = UIImage(data: data)
+        weatherIconImageView.image = UIImage(data: icon)
         cityNameLabel.text = cityName
         tempLabel.text = "\(temp! - 273)°"
         feelsLikeTempLabel.text = "체감온도 \(feelsLikeTemp! - 273)°"
+        
+        
+        for i in 0...7 {
+            let temp = main[i].temp! - 273
+            let time = calculateTimeDiffrence(dxTxt[i])
+            let icon = getWeatherIcon(weather[i].icon)
+            
+            scrollbarTempLabels[i].text = "\(temp)°"
+            scrollbarTimeLabels[i].text = "\(time)시"
+            scrollbarIconImageViews[i].image = UIImage(data: icon)
+        }
     }
-
-
+    
+    private func getWeatherIcon(_ icon: String?) -> Data {
+        guard let icon = icon,
+              let url = URL(string: "https://openweathermap.org/img/wn/\(icon)@2x.png"),
+              let data = try? Data(contentsOf: url) else {
+            return Data()
+        }
+        print(icon)
+        return data
+    }
+    
+    private func calculateTimeDiffrence(_ time: String) -> String {
+        guard let time = time.toDate() else {
+            return "데이터 오류"
+        }
+        
+        let formatterTime = DateFormatter()
+        formatterTime.dateFormat = "a HH"
+        var result = formatterTime.string(from: time).components(separatedBy: " ")
+        
+        result[1] = Int(result[1])! == 0 ?String(Int(result[1])! + 12) : String(Int(result[1])!)
+        result[1] = Int(result[1])! > 12 ? String(Int(result[1])! - 12) : String(Int(result[1])!)
+        
+        let calculatedTime = "\(result[0]) \(result[1])"
+        
+        return calculatedTime
+    }
 }
 
+extension String {
+    func toDate() -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        if let date = dateFormatter.date(from: self) {
+            return date
+        } else {
+            return nil
+        }
+    }
+}

@@ -51,7 +51,7 @@
                                 <rect key="frame" x="20" y="337" width="900" height="151"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dj6-xI-dcL">
-                                        <rect key="frame" x="0.0" y="1" width="1200" height="150"/>
+                                        <rect key="frame" x="0.0" y="-2" width="1200" height="153"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="오전 12시" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UxT-Ru-rlV">
                                                 <rect key="frame" x="9" y="8" width="83" height="21"/>
@@ -144,7 +144,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="오전 1시" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z7i-UX-ctZ">
-                                                <rect key="frame" x="535" y="8" width="83" height="24"/>
+                                                <rect key="frame" x="535" y="7" width="83" height="24"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                 <nil key="textColor"/>
@@ -238,6 +238,30 @@
                     <connections>
                         <outlet property="cityNameLabel" destination="lV1-Df-40G" id="j11-mV-hOL"/>
                         <outlet property="feelsLikeTempLabel" destination="QI9-Zq-IpQ" id="RoU-4Y-A9i"/>
+                        <outlet property="scrollbarIconImageView01" destination="3A2-ue-awx" id="YTb-Yl-Qxf"/>
+                        <outlet property="scrollbarIconImageView02" destination="U6s-xF-njl" id="eLS-Rt-qHZ"/>
+                        <outlet property="scrollbarIconImageView03" destination="9mr-jU-iKk" id="WXZ-2D-r0L"/>
+                        <outlet property="scrollbarIconImageView04" destination="tXE-w0-fHS" id="72q-Gf-0gj"/>
+                        <outlet property="scrollbarIconImageView05" destination="APi-k1-sGD" id="KVz-AS-bux"/>
+                        <outlet property="scrollbarIconImageView06" destination="395-Sg-sEp" id="14f-bD-Cnn"/>
+                        <outlet property="scrollbarIconImageView07" destination="ByM-me-jRc" id="5vd-KA-PSo"/>
+                        <outlet property="scrollbarIconImageView08" destination="3h4-7X-Z65" id="BBK-nV-CcW"/>
+                        <outlet property="scrollbarTempLabel01" destination="aEp-ap-yHt" id="qqV-XO-atS"/>
+                        <outlet property="scrollbarTempLabel02" destination="01S-Uv-UQN" id="VpF-cr-YgP"/>
+                        <outlet property="scrollbarTempLabel03" destination="qQt-ig-Zrs" id="3KW-w5-XKX"/>
+                        <outlet property="scrollbarTempLabel04" destination="XwE-jM-NSG" id="glf-PC-GrQ"/>
+                        <outlet property="scrollbarTempLabel05" destination="xHT-EO-Zy9" id="IDA-kr-5Re"/>
+                        <outlet property="scrollbarTempLabel06" destination="EPN-dX-aDq" id="Yzg-DD-rCN"/>
+                        <outlet property="scrollbarTempLabel07" destination="a86-gU-oka" id="gjy-Nr-bNc"/>
+                        <outlet property="scrollbarTempLabel08" destination="Pek-kW-ITm" id="1EU-P0-JSk"/>
+                        <outlet property="scrollbarTimeLabel01" destination="UxT-Ru-rlV" id="l89-Bi-s64"/>
+                        <outlet property="scrollbarTimeLabel02" destination="PJ6-MX-O85" id="mJn-sS-jZX"/>
+                        <outlet property="scrollbarTimeLabel03" destination="MD2-0A-9wR" id="Zve-Zr-tig"/>
+                        <outlet property="scrollbarTimeLabel04" destination="Z6P-tX-7Cc" id="QUc-Jg-hvi"/>
+                        <outlet property="scrollbarTimeLabel05" destination="Exd-nL-SY8" id="Ofv-QT-IlF"/>
+                        <outlet property="scrollbarTimeLabel06" destination="z7i-UX-ctZ" id="wtq-gv-JmM"/>
+                        <outlet property="scrollbarTimeLabel07" destination="Xmn-ML-9yJ" id="GK3-Qa-UBU"/>
+                        <outlet property="scrollbarTimeLabel08" destination="oMq-Cu-wqG" id="ZR2-r1-Mmu"/>
                         <outlet property="tempLabel" destination="F0N-cY-Wl7" id="fi3-QX-CNr"/>
                         <outlet property="weatherIconImageView" destination="PiP-3U-bc3" id="ezS-ti-4I0"/>
                     </connections>
