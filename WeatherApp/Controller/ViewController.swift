@@ -57,7 +57,7 @@ class ViewController: UIViewController {
         let temp = main.first?.temp!
         let feelsLikeTemp = main.first?.feelsLike
         let cityName = "\(cityName!), \(country!)"
-
+        
         weatherIconImageView.image = UIImage(data: data)
         cityNameLabel.text = cityName
         tempLabel.text = "\(temp! - 273)°"
