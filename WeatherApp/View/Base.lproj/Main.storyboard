@@ -288,6 +288,7 @@
                             </scrollView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PiP-3U-bc3">
                                 <rect key="frame" x="201" y="139" width="160" height="160"/>
+                                <color key="tintColor" systemColor="labelColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="160" id="i8p-Ca-d4Z"/>
                                 </constraints>
