@@ -87,7 +87,7 @@ class ViewController: UIViewController {
                     
                     weatherResponse.forEach {
                         let main = MainData(temp: Int(round($0.main.temp)), feelsLike: Int(round($0.main.feels_like)))
-                        let weather = WeatherData(main: $0.weather.first?.main, icon: $0.weather.first?.icon)
+                        let weather = WeatherData(main: $0.weather.first?.main, description: $0.weather.first?.description )
                         let dxTxt = $0.dt_txt
                         
                         self.main.append(main)
@@ -103,27 +103,39 @@ class ViewController: UIViewController {
     }
     
     private func render() {
-        let icon = getWeatherIcon(weather.first?.icon)
-        let temp = main.first?.temp!
+        guard let icon = WeatherDescription(rawValue: (weather.first?.description)!)?.icon,
+              let temp = main.first?.temp else { return }
+
         let feelsLikeTemp = main.first?.feelsLike
         let cityName = "\(cityName!), \(country!)"
+        let currentTime = isDayTime(currentTime) ? 0 : 1
         
-        weatherIconImageView.image = UIImage(data: icon)
+        weatherIconImageView.image = UIImage(systemName: icon[currentTime])
         cityNameLabel.text = cityName
-        tempLabel.text = "\(temp! - 273)°"
+        tempLabel.text = "\(temp - 273)°"
         feelsLikeTempLabel.text = "체감온도 \(feelsLikeTemp! - 273)°"
         
         
         for i in 0...11 {
+            guard let icon = WeatherDescription(rawValue: (weather[i].description)!)?.icon else { return }
             let temp = main[i].temp! - 273
             let time = calculateTimeDiffrence(dxTxt[i])
-            let icon = getWeatherIcon(weather[i].icon)
-
+            let currentTime = isDayTime(calculateHourTime(dxTxt[i])) ? 0 : 1
+            
             scrollbarTempLabels[i].text = "\(temp)°"
             scrollbarTimeLabels[i].text = "\(time)시"
-            scrollbarIconImageViews[i].image = UIImage(systemName: "")
+            scrollbarIconImageViews[i].image = UIImage(systemName: icon[currentTime])
         }
     }
+    
+    private func isDayTime(_ time: Int) -> Bool {
+        if time >= 6 && time < 18 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     
     private func getWeatherIcon(_ icon: String?) -> Data {
         guard let icon = icon,
@@ -140,9 +152,9 @@ class ViewController: UIViewController {
             return "데이터 오류"
         }
         
-        let formatterTime = DateFormatter()
-        formatterTime.dateFormat = "a HH"
-        var result = formatterTime.string(from: time).components(separatedBy: " ")
+        let dateFormatterTime = DateFormatter()
+        dateFormatterTime.dateFormat = "a HH"
+        var result = dateFormatterTime.string(from: time).components(separatedBy: " ")
         
         result[0] = result[0] == "오전" || result[0] == "AM" ? "오전" : "오후"
         result[1] = Int(result[1])! == 0 ? String(Int(result[1])! + 12) : String(Int(result[1])!)
@@ -151,6 +163,24 @@ class ViewController: UIViewController {
         let calculatedTime = "\(result[0]) \(result[1])"
         
         return calculatedTime
+    }
+    
+    private func calculateHourTime(_ time: String) -> Int {
+        guard let time = time.toDate() else { return 0 }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH"
+        let currentTime = dateFormatter.string(from: time)
+        
+        return Int(currentTime)!
+    }
+    
+    private var currentTime: Int {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH"
+        let currentTime = dateFormatter.string(from: Date())
+        
+        return Int(currentTime)!
     }
 }
 

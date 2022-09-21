@@ -14,7 +14,7 @@ struct MainData {
 
 struct WeatherData {
     let main: String?
-    let icon: String?
+    let description: String?
 }
 
 
