@@ -59,11 +59,11 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        scrollbarTimeLabels = [scrollbarTimeLabel01, scrollbarTimeLabel02, scrollbarTimeLabel03, scrollbarTimeLabel04, scrollbarTimeLabel05, scrollbarTimeLabel06, scrollbarTimeLabel07, scrollbarTimeLabel08]
-        
-        scrollbarTempLabels = [scrollbarTempLabel01, scrollbarTempLabel02, scrollbarTempLabel03, scrollbarTempLabel04, scrollbarTempLabel05, scrollbarTempLabel06, scrollbarTempLabel07, scrollbarTempLabel08]
-        
-        scrollbarIconImageViews = [scrollbarIconImageView01, scrollbarIconImageView02, scrollbarIconImageView03, scrollbarIconImageView04, scrollbarIconImageView05, scrollbarIconImageView06, scrollbarIconImageView07, scrollbarIconImageView08]
+//        scrollbarTimeLabels = [scrollbarTimeLabel01, scrollbarTimeLabel02, scrollbarTimeLabel03, scrollbarTimeLabel04, scrollbarTimeLabel05, scrollbarTimeLabel06, scrollbarTimeLabel07, scrollbarTimeLabel08]
+//
+//        scrollbarTempLabels = [scrollbarTempLabel01, scrollbarTempLabel02, scrollbarTempLabel03, scrollbarTempLabel04, scrollbarTempLabel05, scrollbarTempLabel06, scrollbarTempLabel07, scrollbarTempLabel08]
+//
+//        scrollbarIconImageViews = [scrollbarIconImageView01, scrollbarIconImageView02, scrollbarIconImageView03, scrollbarIconImageView04, scrollbarIconImageView05, scrollbarIconImageView06, scrollbarIconImageView07, scrollbarIconImageView08]
         
         weatherService.getWeather { result in
             switch result {
@@ -102,15 +102,15 @@ class ViewController: UIViewController {
         feelsLikeTempLabel.text = "체감온도 \(feelsLikeTemp! - 273)°"
         
         
-        for i in 0...7 {
-            let temp = main[i].temp! - 273
-            let time = calculateTimeDiffrence(dxTxt[i])
-            let icon = getWeatherIcon(weather[i].icon)
-            
-            scrollbarTempLabels[i].text = "\(temp)°"
-            scrollbarTimeLabels[i].text = "\(time)시"
-            scrollbarIconImageViews[i].image = UIImage(data: icon)
-        }
+//        for i in 0...7 {
+//            let temp = main[i].temp! - 273
+//            let time = calculateTimeDiffrence(dxTxt[i])
+//            let icon = getWeatherIcon(weather[i].icon)
+//            
+//            scrollbarTempLabels[i].text = "\(temp)°"
+//            scrollbarTimeLabels[i].text = "\(time)시"
+//            scrollbarIconImageViews[i].image = UIImage(data: icon)
+//        }
     }
     
     private func getWeatherIcon(_ icon: String?) -> Data {
