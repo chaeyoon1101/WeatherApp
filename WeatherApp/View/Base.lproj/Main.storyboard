@@ -316,8 +316,41 @@
                         <outlet property="cityNameLabel" destination="lV1-Df-40G" id="j11-mV-hOL"/>
                         <outlet property="feelsLikeTempLabel" destination="QI9-Zq-IpQ" id="RoU-4Y-A9i"/>
                         <outlet property="scrollbarIconImageView01" destination="3A2-ue-awx" id="YTb-Yl-Qxf"/>
+                        <outlet property="scrollbarIconImageView02" destination="hX9-6Y-mrn" id="eHc-we-iny"/>
+                        <outlet property="scrollbarIconImageView03" destination="fVI-xq-5v4" id="kSK-c8-2uq"/>
+                        <outlet property="scrollbarIconImageView04" destination="VPD-qA-xlD" id="mlS-1o-8uh"/>
+                        <outlet property="scrollbarIconImageView05" destination="9SC-jp-FOy" id="mEt-lR-Sb0"/>
+                        <outlet property="scrollbarIconImageView06" destination="iCn-BH-ffa" id="1vp-0v-Ke0"/>
+                        <outlet property="scrollbarIconImageView07" destination="Kor-NB-4RI" id="m64-E3-C98"/>
+                        <outlet property="scrollbarIconImageView08" destination="mK1-QY-bbB" id="D4T-rn-j8m"/>
+                        <outlet property="scrollbarIconImageView09" destination="rI7-gs-ZvG" id="5LL-dQ-SVf"/>
+                        <outlet property="scrollbarIconImageView10" destination="gVO-Hx-WLd" id="eZD-4z-QEu"/>
+                        <outlet property="scrollbarIconImageView11" destination="Uw9-nW-iOD" id="Toc-bJ-mFJ"/>
+                        <outlet property="scrollbarIconImageView12" destination="GaF-Ps-zXd" id="R4a-IX-VTd"/>
                         <outlet property="scrollbarTempLabel01" destination="aEp-ap-yHt" id="qqV-XO-atS"/>
+                        <outlet property="scrollbarTempLabel02" destination="CDT-Ys-4sk" id="eZa-9N-cML"/>
+                        <outlet property="scrollbarTempLabel03" destination="NYw-8u-Wa0" id="D69-0t-2qv"/>
+                        <outlet property="scrollbarTempLabel04" destination="3xc-fC-Nmo" id="UwO-Vb-Vgu"/>
+                        <outlet property="scrollbarTempLabel05" destination="RCp-cY-ShV" id="chZ-S3-hRI"/>
+                        <outlet property="scrollbarTempLabel06" destination="HkI-MN-lhN" id="fq5-a1-Snm"/>
+                        <outlet property="scrollbarTempLabel07" destination="Vx7-Nm-gIn" id="ltQ-1Y-uOm"/>
+                        <outlet property="scrollbarTempLabel08" destination="Hyp-8R-410" id="o3h-C5-0M9"/>
+                        <outlet property="scrollbarTempLabel09" destination="YFU-9x-4B7" id="jmi-Ez-4W0"/>
+                        <outlet property="scrollbarTempLabel10" destination="Ods-AU-KSS" id="EBV-ou-yF2"/>
+                        <outlet property="scrollbarTempLabel11" destination="LIX-AU-vhr" id="l2C-4i-3bU"/>
+                        <outlet property="scrollbarTempLabel12" destination="Ok8-Rq-Iuf" id="59p-0y-bw5"/>
                         <outlet property="scrollbarTimeLabel01" destination="UxT-Ru-rlV" id="l89-Bi-s64"/>
+                        <outlet property="scrollbarTimeLabel02" destination="UMy-vJ-u5z" id="b6t-hK-6PB"/>
+                        <outlet property="scrollbarTimeLabel03" destination="P20-IG-KIg" id="PvR-HU-PvM"/>
+                        <outlet property="scrollbarTimeLabel04" destination="abN-FU-jQB" id="nvi-7d-Wuf"/>
+                        <outlet property="scrollbarTimeLabel05" destination="Ayb-GM-cKF" id="QMA-xp-5Jv"/>
+                        <outlet property="scrollbarTimeLabel06" destination="uos-wN-2Ia" id="KDG-gS-9M7"/>
+                        <outlet property="scrollbarTimeLabel07" destination="YxA-oF-XIU" id="zCY-Mp-gbY"/>
+                        <outlet property="scrollbarTimeLabel08" destination="SGp-6o-Qi0" id="wZc-r8-6yx"/>
+                        <outlet property="scrollbarTimeLabel09" destination="iF1-4s-hsY" id="biD-Hp-kZk"/>
+                        <outlet property="scrollbarTimeLabel10" destination="8eD-3n-iIZ" id="imd-ki-FuR"/>
+                        <outlet property="scrollbarTimeLabel11" destination="vlI-rM-LrW" id="1lo-16-Oak"/>
+                        <outlet property="scrollbarTimeLabel12" destination="wFr-DD-Au8" id="IKF-QL-XeW"/>
                         <outlet property="scrollbarView" destination="dj6-xI-dcL" id="gRO-CZ-55y"/>
                         <outlet property="tempLabel" destination="F0N-cY-Wl7" id="fi3-QX-CNr"/>
                         <outlet property="weatherIconImageView" destination="PiP-3U-bc3" id="ezS-ti-4I0"/>
