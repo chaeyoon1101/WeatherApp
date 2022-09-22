@@ -13,10 +13,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var scrollbarView: UIView!
     @IBOutlet weak var scrollView: UIView!
     
-    @IBOutlet var weatherIconImageView: UIImageView!
     @IBOutlet var cityNameLabel: UILabel!
     @IBOutlet var tempLabel: UILabel!
-    @IBOutlet var feelsLikeTempLabel: UILabel!
+    @IBOutlet var weatherDescriptionLabel: UILabel!
     
     @IBOutlet var scrollbarTimeLabel01: UILabel!
     @IBOutlet var scrollbarTimeLabel02: UILabel!
@@ -94,7 +93,7 @@ class ViewController: UIViewController {
                     let weatherResponse = weatherResponse.list
                     
                     weatherResponse.forEach {
-                        let main = MainData(temp: Int(round($0.main.temp)), feelsLike: Int(round($0.main.feels_like)))
+                        let main = MainData(temp: Int(round($0.main.temp)))
                         let weather = WeatherData(main: $0.weather.first?.main, description: $0.weather.first?.description )
                         let dxTxt = $0.dt_txt
                         
@@ -132,20 +131,15 @@ class ViewController: UIViewController {
    
     
     private func render() {
-        guard let icon = WeatherDescription(rawValue: (weather.first?.description)!)?.icon,
-              let temp = main.first?.temp,
+        guard let temp = main.first?.temp,
               let video = WeatherBackground(rawValue: (weather.first?.description)!)?.video else { return }
 
-        let feelsLikeTemp = main.first?.feelsLike
         let cityName = "\(cityName!), \(country!)"
         let currentTime = isDayTime(currentTime) ? 0 : 1
         
         playMp4Video(name: video[currentTime])
-        weatherIconImageView.image = UIImage(systemName: icon[currentTime])
         cityNameLabel.text = cityName
         tempLabel.text = "\(temp - 273)°"
-        feelsLikeTempLabel.text = "체감온도 \(feelsLikeTemp! - 273)°"
-        
         
         for i in 0...11 {
             guard let icon = WeatherDescription(rawValue: (weather[i].description)!)?.icon else { return }

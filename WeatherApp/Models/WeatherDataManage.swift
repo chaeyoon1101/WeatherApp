@@ -9,7 +9,6 @@ import Foundation
 
 struct MainData {
     let temp: Int?
-    let feelsLike: Int?
 }
 
 struct WeatherData {
