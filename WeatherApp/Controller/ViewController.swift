@@ -118,7 +118,7 @@ class ViewController: UIViewController {
     
     private func playMp4Video() {
             DispatchQueue.main.async { [weak self] in
-                self?.playVideo(with: "WeatherVideo/DayClouds")
+                self?.playVideo(with: "WeatherVideo/NightMist")
             }
         }
     
