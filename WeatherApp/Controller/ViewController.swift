@@ -6,9 +6,12 @@
 //
 
 import UIKit
+import AVFoundation
+import Gifu
 
 class ViewController: UIViewController {
     @IBOutlet weak var scrollbarView: UIView!
+    @IBOutlet weak var scrollView: UIView!
     
     @IBOutlet var weatherIconImageView: UIImageView!
     @IBOutlet var cityNameLabel: UILabel!
@@ -54,6 +57,9 @@ class ViewController: UIViewController {
     @IBOutlet var scrollbarIconImageView11: UIImageView!
     @IBOutlet var scrollbarIconImageView12: UIImageView!
     
+    @IBOutlet weak var gifImageView: GIFImageView!
+    @IBOutlet weak var animationView: UIImageView!
+    
     var scrollbarTimeLabels = [UILabel]()
     
     var scrollbarTempLabels = [UILabel]()
@@ -71,6 +77,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        scrollView.layer.cornerRadius = 20
+        
         scrollbarTimeLabels = [scrollbarTimeLabel01, scrollbarTimeLabel02, scrollbarTimeLabel03, scrollbarTimeLabel04, scrollbarTimeLabel05, scrollbarTimeLabel06, scrollbarTimeLabel07, scrollbarTimeLabel08, scrollbarTimeLabel09, scrollbarTimeLabel10, scrollbarTimeLabel11, scrollbarTimeLabel12]
 
         scrollbarTempLabels = [scrollbarTempLabel01, scrollbarTempLabel02, scrollbarTempLabel03, scrollbarTempLabel04, scrollbarTempLabel05, scrollbarTempLabel06, scrollbarTempLabel07, scrollbarTempLabel08, scrollbarTempLabel09, scrollbarTempLabel10, scrollbarTempLabel11, scrollbarTempLabel12]
@@ -101,6 +109,35 @@ class ViewController: UIViewController {
             }
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        playMp4Video()
+    }
+    
+    private func playMp4Video() {
+            DispatchQueue.main.async { [weak self] in
+                self?.playVideo(with: "WeatherVideo/DayClouds")
+            }
+        }
+    
+    private func playVideo(with resourceName: String) {
+        guard let path = Bundle.main.path(forResource: resourceName, ofType: "mp4") else {
+            print("1")
+            return
+        }
+        
+
+        let player = AVPlayer(url: URL(fileURLWithPath: path))
+        let playerLayer = AVPlayerLayer(player: player)
+        playerLayer.frame = animationView.bounds
+        animationView.layer.addSublayer(playerLayer)
+        playerLayer.videoGravity = .resizeAspectFill
+        player.play()
+    }
+    
+   
     
     private func render() {
         guard let icon = WeatherDescription(rawValue: (weather.first?.description)!)?.icon,
