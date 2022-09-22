@@ -8,8 +8,9 @@
 import UIKit
 import AVFoundation
 import Gifu
+import CoreLocation
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var scrollbarView: UIView!
     @IBOutlet weak var scrollView: UIView!
     
@@ -134,6 +135,8 @@ class ViewController: UIViewController {
             962: "허리케인",
         ]
     
+    var hasCurrentLocation: Bool = false
+    
     var scrollbarTimeLabels = [UILabel]()
     
     var scrollbarTempLabels = [UILabel]()
@@ -148,8 +151,22 @@ class ViewController: UIViewController {
     var cityName: String?
     var country: String?
     
+    var locationManger = CLLocationManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        locationManger.delegate = self
+        
+        locationManger.desiredAccuracy = kCLLocationAccuracyBest
+        
+        locationManger.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            print("위치 서비스 On 상태")
+            locationManger.startUpdatingLocation()
+        } else {
+            print("위치 서비스 Off 상태")
+        }
         scrollView.layer.cornerRadius = 20
         
         scrollbarTimeLabels = [scrollbarTimeLabel01, scrollbarTimeLabel02, scrollbarTimeLabel03, scrollbarTimeLabel04, scrollbarTimeLabel05, scrollbarTimeLabel06, scrollbarTimeLabel07, scrollbarTimeLabel08, scrollbarTimeLabel09, scrollbarTimeLabel10, scrollbarTimeLabel11, scrollbarTimeLabel12]
@@ -158,29 +175,61 @@ class ViewController: UIViewController {
 
         scrollbarIconImageViews = [scrollbarIconImageView01, scrollbarIconImageView02, scrollbarIconImageView03, scrollbarIconImageView04, scrollbarIconImageView05, scrollbarIconImageView06, scrollbarIconImageView07, scrollbarIconImageView08, scrollbarIconImageView09, scrollbarIconImageView10, scrollbarIconImageView11, scrollbarIconImageView12]
         
-        weatherService.getWeather { result in
-            switch result {
-            case .success(let weatherResponse):
-                DispatchQueue.main.async {
-                    self.cityName = weatherResponse.city?.name
-                    self.country = weatherResponse.city?.country
-                    let weatherResponse = weatherResponse.list
-                    
-                    weatherResponse.forEach {
-                        let main = MainData(temp: Int(round($0.main.temp)))
-                        let weather = WeatherData(main: $0.weather.first?.main, description: $0.weather.first?.description, id: $0.weather.first?.id )
-                        let dxTxt = $0.dt_txt
+        allowRequest()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if locationManger.authorizationStatus == .denied {
+            allowRequest()
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if hasCurrentLocation {
+            return
+        }
+        
+        if let location = locations.first {
+            hasCurrentLocation = true
+            let lat = location.coordinate.latitude
+            let lon = location.coordinate.longitude
+            weatherService.getWeather(lat, lon) { result in
+                switch result {
+                case .success(let weatherResponse):
+                    DispatchQueue.main.async {
+                        self.cityName = weatherResponse.city?.name
+                        self.country = weatherResponse.city?.country
+                        let weatherResponse = weatherResponse.list
                         
-                        self.main.append(main)
-                        self.weather.append(weather)
-                        self.dxTxt.append(dxTxt)
+                        weatherResponse.forEach {
+                            let main = MainData(temp: Int(round($0.main.temp)))
+                            let weather = WeatherData(main: $0.weather.first?.main, description: $0.weather.first?.description, id: $0.weather.first?.id )
+                            let dxTxt = $0.dt_txt
+                            
+                            self.main.append(main)
+                            self.weather.append(weather)
+                            self.dxTxt.append(dxTxt)
+                        }
+                        print("render")
+                        self.render()
                     }
-                    self.render()
+                case .failure(_ ):
+                    print("Error")
                 }
-            case .failure(_ ):
-                print("Error")
             }
         }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
+    }
+    
+    func allowRequest() {
+        let alert = UIAlertController(title: "위치 권한 요청", message: "위치 권한 설정이 거절되어있습니다\n설정에서 위치 권한 설정을 허용으로 변경해주세요", preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "확인", style: .default))
+        
+        present(alert, animated: true)
     }
     
     private func playMp4Video(name: String) {
@@ -282,4 +331,3 @@ class ViewController: UIViewController {
         return Int(currentTime)!
     }
 }
-
