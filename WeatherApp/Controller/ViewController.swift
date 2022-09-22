@@ -110,24 +110,16 @@ class ViewController: UIViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        playMp4Video()
-    }
-    
-    private func playMp4Video() {
+    private func playMp4Video(name: String) {
             DispatchQueue.main.async { [weak self] in
-                self?.playVideo(with: "WeatherVideo/NightMist")
+                self?.playVideo(with: "WeatherVideo/\(name)")
             }
         }
     
     private func playVideo(with resourceName: String) {
         guard let path = Bundle.main.path(forResource: resourceName, ofType: "mp4") else {
-            print("1")
             return
         }
-        
 
         let player = AVPlayer(url: URL(fileURLWithPath: path))
         let playerLayer = AVPlayerLayer(player: player)
@@ -141,12 +133,14 @@ class ViewController: UIViewController {
     
     private func render() {
         guard let icon = WeatherDescription(rawValue: (weather.first?.description)!)?.icon,
-              let temp = main.first?.temp else { return }
+              let temp = main.first?.temp,
+              let video = WeatherBackground(rawValue: (weather.first?.description)!)?.video else { return }
 
         let feelsLikeTemp = main.first?.feelsLike
         let cityName = "\(cityName!), \(country!)"
         let currentTime = isDayTime(currentTime) ? 0 : 1
         
+        playMp4Video(name: video[currentTime])
         weatherIconImageView.image = UIImage(systemName: icon[currentTime])
         cityNameLabel.text = cityName
         tempLabel.text = "\(temp - 273)°"
