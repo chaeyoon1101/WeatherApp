@@ -300,7 +300,7 @@
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </imageView>
                                         </subviews>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.20472889072847683" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="backgroundColor" red="0.64419586489898983" green="0.64419586489898983" blue="0.64419586489898983" alpha="0.35215749172185429" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="1480" id="f1z-sw-k5D"/>
                                             <constraint firstAttribute="height" constant="150" id="zaT-8u-f4S"/>
