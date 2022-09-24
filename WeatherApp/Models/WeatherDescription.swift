@@ -27,15 +27,9 @@ enum WeatherDescription: String {
             return ["sun.max.fill", "moon.stars.fill"]
         case .fewClouds:
             return ["cloud.sun.fill", "cloud.moon.fill"]
-        case .scatteredClouds:
+        case .scatteredClouds, .brokenClouds, .overcastClouds:
             return ["cloud.fill", "cloud.fill"]
-        case .brokenClouds:
-            return ["cloud.fill", "cloud.fill"]
-        case .overcastClouds:
-            return ["cloud.fill", "cloud.fill"]
-        case .showerRain:
-            return ["cloud.sun.rain.fill", "cloud.moon.rain.fill"]
-        case .lightRain:
+        case .showerRain, .lightRain:
             return ["cloud.sun.rain.fill", "cloud.moon.rain.fill"]
         case .moderateRain:
             return ["cloud.heavyrain.fill", "cloud.heavyrain.fill"]

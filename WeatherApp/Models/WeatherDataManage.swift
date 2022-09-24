@@ -16,5 +16,3 @@ struct WeatherData {
     let description: String?
     let id: Int?
 }
-
-
