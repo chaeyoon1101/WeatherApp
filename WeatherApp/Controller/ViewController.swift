@@ -135,7 +135,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             962: "허리케인",
         ]
     
-    var hasCurrentLocation: Bool = false
+    static var hasCurrentLocation: Bool = false
     
     var scrollbarTimeLabels = [UILabel]()
     
@@ -155,20 +155,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        locationManger.delegate = self
         
-        locationManger.desiredAccuracy = kCLLocationAccuracyBest
-        
-        locationManger.requestWhenInUseAuthorization()
-        
-        if CLLocationManager.locationServicesEnabled() {
-            print("위치 서비스 On 상태")
-            locationManger.startUpdatingLocation()
-        } else {
-            print("위치 서비스 Off 상태")
-        }
         scrollView.layer.cornerRadius = 20
         
+        prepareToGetLocation()
         scrollbarTimeLabels = [scrollbarTimeLabel01, scrollbarTimeLabel02, scrollbarTimeLabel03, scrollbarTimeLabel04, scrollbarTimeLabel05, scrollbarTimeLabel06, scrollbarTimeLabel07, scrollbarTimeLabel08, scrollbarTimeLabel09, scrollbarTimeLabel10, scrollbarTimeLabel11, scrollbarTimeLabel12]
 
         scrollbarTempLabels = [scrollbarTempLabel01, scrollbarTempLabel02, scrollbarTempLabel03, scrollbarTempLabel04, scrollbarTempLabel05, scrollbarTempLabel06, scrollbarTempLabel07, scrollbarTempLabel08, scrollbarTempLabel09, scrollbarTempLabel10, scrollbarTempLabel11, scrollbarTempLabel12]
@@ -184,13 +174,29 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
+    func prepareToGetLocation() {
+        locationManger.delegate = self
+        
+        locationManger.desiredAccuracy = kCLLocationAccuracyBest
+        
+        locationManger.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            print("위치 서비스 On 상태")
+            locationManger.startUpdatingLocation()
+        } else {
+            print("위치 서비스 Off 상태")
+        }
+        
+    }
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if hasCurrentLocation {
+        if ViewController.hasCurrentLocation {
             return
         }
         
         if let location = locations.first {
-            hasCurrentLocation = true
+            ViewController.hasCurrentLocation = true
             let lat = location.coordinate.latitude
             let lon = location.coordinate.longitude
             weatherService.getWeather(lat, lon) { result in
