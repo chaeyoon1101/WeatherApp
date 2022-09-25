@@ -136,6 +136,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         ]
     
     static var hasCurrentLocation: Bool = false
+    static var isAppStatesActive: Bool = false
     
     var scrollbarTimeLabels = [UILabel]()
     
@@ -152,6 +153,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var country: String?
     
     var locationManger = CLLocationManager()
+    
+    var lat: Double = 0
+    var lon: Double = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -191,14 +195,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if ViewController.hasCurrentLocation {
-            return
+        if ViewController.isAppStatesActive == false { return }
+        if let location = locations.first {
+            lat = location.coordinate.latitude
+            lon = location.coordinate.longitude
         }
         
-        if let location = locations.first {
-            ViewController.hasCurrentLocation = true
-            let lat = location.coordinate.latitude
-            let lon = location.coordinate.longitude
+        if ViewController.hasCurrentLocation == false {
             weatherService.getWeather(lat, lon) { result in
                 switch result {
                 case .success(let weatherResponse):
@@ -223,7 +226,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     print("Error")
                 }
             }
+            ViewController.hasCurrentLocation = true
         }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        locationManger.requestWhenInUseAuthorization()
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
