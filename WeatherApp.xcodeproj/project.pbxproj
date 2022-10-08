@@ -20,9 +20,10 @@
 		2B34FC9928DB6E83005ECF72 /* WeatherVideo in Resources */ = {isa = PBXBuildFile; fileRef = 2B34FC9828DB6E83005ECF72 /* WeatherVideo */; };
 		2B34FCBB28DC9E59005ECF72 /* WeatherBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B34FCBA28DC9E59005ECF72 /* WeatherBackground.swift */; };
 		2B34FCBE28DCA6DC005ECF72 /* Extension+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B34FCBD28DCA6DC005ECF72 /* Extension+String.swift */; };
+		2B682DC028F1E9F2008C549F /* WeatherDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B682DBF28F1E9F2008C549F /* WeatherDescription.swift */; };
 		2B6F854628EDDECE00CE9E76 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6F854528EDDECE00CE9E76 /* WeatherViewController.swift */; };
 		2BC13E5128D7570B00C4EB82 /* WeatherDataManage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC13E5028D7570B00C4EB82 /* WeatherDataManage.swift */; };
-		2BCBFA1728DB37BE0064881B /* WeatherDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCBFA1628DB37BE0064881B /* WeatherDescription.swift */; };
+		2BCBFA1728DB37BE0064881B /* WeatherImageIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCBFA1628DB37BE0064881B /* WeatherImageIcon.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,9 +42,10 @@
 		2B34FC9828DB6E83005ECF72 /* WeatherVideo */ = {isa = PBXFileReference; lastKnownFileType = folder; path = WeatherVideo; sourceTree = "<group>"; };
 		2B34FCBA28DC9E59005ECF72 /* WeatherBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherBackground.swift; sourceTree = "<group>"; };
 		2B34FCBD28DCA6DC005ECF72 /* Extension+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+String.swift"; sourceTree = "<group>"; };
+		2B682DBF28F1E9F2008C549F /* WeatherDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDescription.swift; sourceTree = "<group>"; };
 		2B6F854528EDDECE00CE9E76 /* WeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
 		2BC13E5028D7570B00C4EB82 /* WeatherDataManage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDataManage.swift; sourceTree = "<group>"; };
-		2BCBFA1628DB37BE0064881B /* WeatherDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDescription.swift; sourceTree = "<group>"; };
+		2BCBFA1628DB37BE0064881B /* WeatherImageIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherImageIcon.swift; sourceTree = "<group>"; };
 		2BCBFA1C28DB61140064881B /* WeatherApp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = WeatherApp; sourceTree = "<group>"; };
 		73B94EB0DE821726C6A08772 /* Pods_WeatherApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5FB09356EA627FA8013B197 /* Pods-WeatherApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherApp.release.xcconfig"; path = "Target Support Files/Pods-WeatherApp/Pods-WeatherApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -129,8 +131,9 @@
 				2B071CB228D711FF00B012EB /* Weather.swift */,
 				2B071CB428D714B000B012EB /* WeatherService.swift */,
 				2BC13E5028D7570B00C4EB82 /* WeatherDataManage.swift */,
-				2BCBFA1628DB37BE0064881B /* WeatherDescription.swift */,
+				2BCBFA1628DB37BE0064881B /* WeatherImageIcon.swift */,
 				2B34FCBA28DC9E59005ECF72 /* WeatherBackground.swift */,
+				2B682DBF28F1E9F2008C549F /* WeatherDescription.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -280,11 +283,12 @@
 				2B071CB528D714B000B012EB /* WeatherService.swift in Sources */,
 				2B6F854628EDDECE00CE9E76 /* WeatherViewController.swift in Sources */,
 				2B071CB328D711FF00B012EB /* Weather.swift in Sources */,
+				2B682DC028F1E9F2008C549F /* WeatherDescription.swift in Sources */,
 				2B34FCBB28DC9E59005ECF72 /* WeatherBackground.swift in Sources */,
 				2B071C9D28D49E0700B012EB /* ViewController.swift in Sources */,
 				2B071C9928D49E0700B012EB /* AppDelegate.swift in Sources */,
 				2B34FCBE28DCA6DC005ECF72 /* Extension+String.swift in Sources */,
-				2BCBFA1728DB37BE0064881B /* WeatherDescription.swift in Sources */,
+				2BCBFA1728DB37BE0064881B /* WeatherImageIcon.swift in Sources */,
 				2BC13E5128D7570B00C4EB82 /* WeatherDataManage.swift in Sources */,
 				2B071C9B28D49E0700B012EB /* SceneDelegate.swift in Sources */,
 			);
