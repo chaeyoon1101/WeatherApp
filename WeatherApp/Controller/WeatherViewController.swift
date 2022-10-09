@@ -69,7 +69,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     
     var main = [MainData]()
     var weather = [WeatherData]()
-    var dxTxt = [String]()
+    var cityTime = [String]()
     var cityName: String?
     var country: String?
     
@@ -96,11 +96,11 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
                     weatherResponse.forEach {
                         let main = MainData(temp: Int(round($0.main.temp)))
                         let weather = WeatherData(main: $0.weather.first?.main, description: $0.weather.first?.description, id: $0.weather.first?.id )
-                        let dxTxt = $0.dt_txt
+                        let time = $0.dt_txt
                         
                         self.main.append(main)
                         self.weather.append(weather)
-                        self.dxTxt.append(dxTxt)
+                        self.cityTime.append(time)
                     }
                     print("render")
                     self.render()
@@ -113,7 +113,6 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         locationManger.requestWhenInUseAuthorization()
-        
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -137,6 +136,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     private func render() {
+        locationManger.stopUpdatingLocation()
         guard let temp = main.first?.temp,
               let video = WeatherBackground(rawValue: (weather.first?.description)!)?.video,
               let weatherId = weather.first?.id else { return }
@@ -155,9 +155,8 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         for i in scrollbarCount {
             guard let icon = WeatherImageIcon(rawValue: (weather[i].description)!)?.icon else { return }
             let temp = main[i].temp! - 273
-            let time = calculateTimeDiffrence(dxTxt[i])
-            let currentTime = isDayTime(calculateHourTime(dxTxt[i])) ? 0 : 1
-            
+            let time = calculateTimeDiffrence(cityTime[i])
+            let currentTime = isDayTime(calculateHourTime(cityTime[i])) ? 0 : 1
             scrollbarTempLabels[i].text = "\(temp)°"
             scrollbarTimeLabels[i].text = "\(time)시"
             scrollbarImageViews[i].image = UIImage(systemName: icon[currentTime])
@@ -201,7 +200,6 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     
     private func calculateTimeDiffrence(_ time: String) -> String {
         guard let time = time.toDate() else { return "데이터 오류" }
-        
         let dateFormatterTime = DateFormatter()
         dateFormatterTime.dateFormat = "a HH"
         var result = dateFormatterTime.string(from: time).components(separatedBy: " ")
