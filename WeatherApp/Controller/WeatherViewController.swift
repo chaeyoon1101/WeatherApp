@@ -59,6 +59,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var scrollbarImageView11: UIImageView!
     @IBOutlet weak var scrollbarImageView12: UIImageView!
     
+    var weatherDatas = [[(Int, String)]]()
     var scrollbarTimeLabels = [UILabel]()
     var scrollbarTempLabels = [UILabel]()
     var scrollbarImageViews = [UIImageView]()
@@ -89,19 +90,31 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
             switch result {
             case .success(let weatherResponse):
                 DispatchQueue.main.async {
+                    self.weatherDatas = [[]]
                     self.cityName = weatherResponse.city?.name
                     self.country = weatherResponse.city?.country
                     let weatherResponse = weatherResponse.list
-                    
+                    var count = 0
                     weatherResponse.forEach {
-                        let main = MainData(temp: Int(round($0.main.temp)))
+                        let main = MainData(temp: Int(round($0.main.temp) - 273))
                         let weather = WeatherData(main: $0.weather.first?.main, description: $0.weather.first?.description, id: $0.weather.first?.id )
                         let time = $0.dt_txt
+                        
+
+                        if count % 5 == 0 && count != 0 {
+                            self.weatherDatas[self.weatherDatas.count - 1] = self.weatherDatas[self.weatherDatas.count - 1].sorted { $0.0 < $1.0 }
+                            self.weatherDatas.append([])
+                        }
+                        
+                        self.weatherDatas[self.weatherDatas.count - 1].append( (main.temp!, weather.main!) )
+                        count += 1
                         
                         self.main.append(main)
                         self.weather.append(weather)
                         self.cityTime.append(time)
                     }
+                    
+                    print(self.weatherDatas)
                     print("render")
                     self.render()
                 }
@@ -148,13 +161,13 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         
         playMp4Video(name: video[currentTime])
         WeatherRegionLabel.text = cityName
-        WeatherTempLabel.text = "\(temp - 273)°"
+        WeatherTempLabel.text = "\(temp)°"
         WeatherShortDescriptionLabel.text = "\(weatherShortDescription)"
         
         let scrollbarCount = 0...11
         for i in scrollbarCount {
             guard let icon = WeatherImageIcon(rawValue: (weather[i].description)!)?.icon else { return }
-            let temp = main[i].temp! - 273
+            let temp = main[i].temp!
             let time = calculateTimeDiffrence(cityTime[i])
             let currentTime = isDayTime(calculateHourTime(cityTime[i])) ? 0 : 1
             scrollbarTempLabels[i].text = "\(temp)°"

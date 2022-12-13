@@ -26,7 +26,7 @@ enum WeatherBackground: String {
         case .clearSky:
             return ["DayClearSky", "NightClearSky"]
         case .fewClouds:
-            return ["DayFewClouds", "NightFewClouds"]
+            return ["DayClearSky", "NightFewClouds"]
         case .scatteredClouds, .brokenClouds, .overcastClouds:
             return ["DayClouds", "NightClouds"]
         case .showerRain, .lightRain, .moderateRain, .rain:
