@@ -10,7 +10,7 @@ import AVFoundation
 import Gifu
 import CoreLocation
 
-class WeatherViewController: UIViewController, CLLocationManagerDelegate {
+class WeatherViewController: UIViewController {
     @IBOutlet weak var WeatherAnimationView: UIImageView!
     
     @IBOutlet weak var WeatherScrollbar: UIScrollView!
@@ -87,72 +87,9 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         prepareToGetLocation()
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.first else { return }
-        
-        let lat = location.coordinate.latitude
-        let lon = location.coordinate.longitude
-        
-        weatherService.getWeather(lat, lon) { result in
-            switch result {
-            case .success(let weatherResponse):
-                DispatchQueue.main.async {
-                    self.weatherDatas = [[]]
-                    self.cityName = weatherResponse.city?.name
-                    self.country = weatherResponse.city?.country
-                    let weatherResponse = weatherResponse.list
-                    var count = 0
-                    weatherResponse.forEach {
-                        let main = MainData(temp: Int(round($0.main.temp) - 273))
-                        let weather = WeatherData(main: $0.weather.first?.main, description: $0.weather.first?.description, id: $0.weather.first?.id )
-                        let time = $0.dt_txt
-                        
-
-                        if count % 5 == 0 && count != 0 {
-                            self.weatherDatas[self.weatherDatas.count - 1] = self.weatherDatas[self.weatherDatas.count - 1].sorted { $0.0 < $1.0 }
-                            self.weatherDatas.append([])
-                        }
-                        
-                        self.weatherDatas[self.weatherDatas.count - 1].append( (main.temp!, weather.description!) )
-                        count += 1
-                        
-                        self.main.append(main)
-                        self.weather.append(weather)
-                        self.cityTime.append(time)
-                    }
-                    
-                    print("render")
-                    self.render()
-                }
-            case .failure(_ ):
-                print("Error")
-            }
-        }
-    }
     
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        locationManger.requestWhenInUseAuthorization()
-    }
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(error)
-    }
-    
-    private func prepareToGetLocation() {
-        locationManger.delegate = self
-        
-        locationManger.desiredAccuracy = kCLLocationAccuracyBest
-        
-        locationManger.requestWhenInUseAuthorization()
-        
-        if CLLocationManager.locationServicesEnabled() {
-            print("위치 서비스 On 상태")
-            locationManger.startUpdatingLocation()
-        } else {
-            print("위치 서비스 Off 상태")
-            locationManger.stopUpdatingLocation()
-        }
-    }
+  
     
     private func render() {
         locationManger.stopUpdatingLocation()
@@ -255,7 +192,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         return Int(currentTime)!
     }
     
-    func getWeekDay(_ date: String) -> Int {
+    private func getWeekDay(_ date: String) -> Int {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ko_kr")
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -267,14 +204,14 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         return comps.weekday! - 1
     }
     
-    func getCurrentDate() -> String {
+    private func getCurrentDate() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let date = dateFormatter.string(from: Date())
         return date
     }
     
-    func getWeatherDayIcon(_ index: Int) -> UIImage {
+    private func getWeatherDayIcon(_ index: Int) -> UIImage {
         var weatherCount = [String: Int]()
         for weatherData in weatherDatas[index] {
             if weatherCount[weatherData.1] != nil {
@@ -292,9 +229,77 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     }
 }
 
+extension WeatherViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.first else { return }
+        
+        let lat = location.coordinate.latitude
+        let lon = location.coordinate.longitude
+        
+        weatherService.getWeather(lat, lon) { result in
+            switch result {
+            case .success(let weatherResponse):
+                DispatchQueue.main.async {
+                    self.weatherDatas = [[]]
+                    self.cityName = weatherResponse.city?.name
+                    self.country = weatherResponse.city?.country
+                    let weatherResponse = weatherResponse.list
+                    var count = 0
+                    weatherResponse.forEach {
+                        let main = MainData(temp: Int(round($0.main.temp) - 273))
+                        let weather = WeatherData(main: $0.weather.first?.main, description: $0.weather.first?.description, id: $0.weather.first?.id )
+                        let time = $0.dt_txt
+                        
+
+                        if count % 5 == 0 && count != 0 {
+                            self.weatherDatas[self.weatherDatas.count - 1] = self.weatherDatas[self.weatherDatas.count - 1].sorted { $0.0 < $1.0 }
+                            self.weatherDatas.append([])
+                        }
+                        
+                        self.weatherDatas[self.weatherDatas.count - 1].append( (main.temp!, weather.description!) )
+                        count += 1
+                        
+                        self.main.append(main)
+                        self.weather.append(weather)
+                        self.cityTime.append(time)
+                    }
+                    
+                    print("render")
+                    self.render()
+                }
+            case .failure(_ ):
+                print("Error")
+            }
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        locationManger.requestWhenInUseAuthorization()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
+    }
+    
+    private func prepareToGetLocation() {
+        locationManger.delegate = self
+        
+        locationManger.desiredAccuracy = kCLLocationAccuracyBest
+        
+        locationManger.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            print("위치 서비스 On 상태")
+            locationManger.startUpdatingLocation()
+        } else {
+            print("위치 서비스 Off 상태")
+            locationManger.stopUpdatingLocation()
+        }
+    }
+}
+
 extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(weatherDatas.count)
         return weatherDatas.count
     }
     
@@ -310,15 +315,11 @@ extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
         cell.weatherImage.image = getWeatherDayIcon(indexPath.row)
         cell.lowestTempLabel.text = "\(weatherDatas[indexPath.row].first!.0)°"
         cell.highestTempLabel.text = "\(weatherDatas[indexPath.row].last!.0)°"
+        cell.selectionStyle = .none
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 54.0
     }
-    
-    
-    
-    
-    
 }
