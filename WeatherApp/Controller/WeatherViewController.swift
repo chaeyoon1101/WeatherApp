@@ -76,6 +76,8 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     var cityName: String?
     var country: String?
     
+    let weekArray = ["일", "월", "화", "수", "목", "금", "토"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         weatherTableView.dataSource = self
@@ -111,7 +113,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
                             self.weatherDatas.append([])
                         }
                         
-                        self.weatherDatas[self.weatherDatas.count - 1].append( (main.temp!, weather.main!) )
+                        self.weatherDatas[self.weatherDatas.count - 1].append( (main.temp!, weather.description!) )
                         count += 1
                         
                         self.main.append(main)
@@ -252,6 +254,42 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         
         return Int(currentTime)!
     }
+    
+    func getWeekDay(_ date: String) -> Int {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_kr")
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        let inputDay = dateFormatter.date(from: date)
+        let cal = Calendar(identifier: .gregorian)
+        let comps = cal.dateComponents([.weekday], from: inputDay!)
+        
+        return comps.weekday! - 1
+    }
+    
+    func getCurrentDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let date = dateFormatter.string(from: Date())
+        return date
+    }
+    
+    func getWeatherDayIcon(_ index: Int) -> UIImage {
+        var weatherCount = [String: Int]()
+        for weatherData in weatherDatas[index] {
+            if weatherCount[weatherData.1] != nil {
+                weatherCount[weatherData.1]! += 1
+            } else {
+                weatherCount[weatherData.1] = 1
+            }
+        }
+        
+        let weatherIcon = weatherCount.sorted { $0.value > $1.value }[0].key
+        guard let icon = WeatherImageIcon(rawValue: (weatherIcon.description))?.icon,
+              let image = UIImage(systemName: icon[0]) else { return UIImage() }
+        
+        return image
+    }
 }
 
 extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
@@ -263,19 +301,20 @@ extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherTableViewCell", for: indexPath) as? WeatherTableViewCell else {
             return UITableViewCell()
-            
         }
         
-        cell.dayLabel.text = "토"
-        cell.weatherImage.image = UIImage(systemName: "sun.max.fill")
-        cell.lowestTempLabel.text = "16°"
-        cell.highestTempLabel.text = "24°"
+        let date = getCurrentDate()
         
+        cell.dayLabel.text = indexPath.row == 0 ? "오늘" : weekArray[(getWeekDay(date) + indexPath.row) % 7]
+        
+        cell.weatherImage.image = getWeatherDayIcon(indexPath.row)
+        cell.lowestTempLabel.text = "\(weatherDatas[indexPath.row].first!.0)°"
+        cell.highestTempLabel.text = "\(weatherDatas[indexPath.row].last!.0)°"
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60.0
+        return 54.0
     }
     
     
