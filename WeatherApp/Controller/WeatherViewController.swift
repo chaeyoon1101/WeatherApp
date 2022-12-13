@@ -16,6 +16,8 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var WeatherScrollbar: UIScrollView!
     @IBOutlet weak var WeatherScrollView: UIView!
     
+    @IBOutlet weak var weatherTableView: UITableView!
+    
     @IBOutlet weak var WeatherRegionLabel: UILabel!
     @IBOutlet weak var WeatherTempLabel: UILabel!
     @IBOutlet weak var WeatherShortDescriptionLabel: UILabel!
@@ -76,6 +78,9 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        weatherTableView.dataSource = self
+        weatherTableView.delegate = self
+
         prepareSetDisplay()
         prepareToGetLocation()
     }
@@ -114,7 +119,6 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
                         self.cityTime.append(time)
                     }
                     
-                    print(self.weatherDatas)
                     print("render")
                     self.render()
                 }
@@ -164,6 +168,8 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         WeatherTempLabel.text = "\(temp)°"
         WeatherShortDescriptionLabel.text = "\(weatherShortDescription)"
         
+        weatherTableView.reloadData()
+        
         let scrollbarCount = 0...11
         for i in scrollbarCount {
             guard let icon = WeatherImageIcon(rawValue: (weather[i].description)!)?.icon else { return }
@@ -201,6 +207,9 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         scrollbarImageViews = [scrollbarImageView01, scrollbarImageView02, scrollbarImageView03, scrollbarImageView04, scrollbarImageView05, scrollbarImageView06, scrollbarImageView07, scrollbarImageView08, scrollbarImageView09, scrollbarImageView10, scrollbarImageView11, scrollbarImageView12]
         WeatherScrollbar.layer.cornerRadius = 20
         WeatherScrollView.layer.cornerRadius = 20
+        weatherTableView.isScrollEnabled = false
+        weatherTableView.backgroundColor = .clear
+        weatherTableView.layer.cornerRadius = 20
     }
     
     private func isDayTime(_ time: Int) -> Bool {
@@ -243,4 +252,34 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
         
         return Int(currentTime)!
     }
+}
+
+extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print(weatherDatas.count)
+        return weatherDatas.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherTableViewCell", for: indexPath) as? WeatherTableViewCell else {
+            return UITableViewCell()
+            
+        }
+        
+        cell.dayLabel.text = "토"
+        cell.weatherImage.image = UIImage(systemName: "sun.max.fill")
+        cell.lowestTempLabel.text = "16°"
+        cell.highestTempLabel.text = "24°"
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60.0
+    }
+    
+    
+    
+    
+    
 }
